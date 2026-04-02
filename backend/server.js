@@ -14,7 +14,10 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 })); // Secure HTTP headers
 app.use(morgan('dev')); // Request logging
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8080', 'http://localhost:5173', 'http://localhost:5000', 'https://feedback-analyzer-flax.vercel.app'],
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB Connection
