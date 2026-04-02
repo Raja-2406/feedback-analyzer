@@ -14,9 +14,26 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 })); // Secure HTTP headers
 app.use(morgan('dev')); // Request logging
+const allowedOrigins = [
+  'https://feedback-analyzer-gewn596rt-rajacs2406-3063s-projects.vercel.app',
+  'https://feedback-analyzer-flax.vercel.app',
+  'http://localhost:8080',
+  'http://localhost:5173',
+  'http://localhost:5000'
+];
+
 app.use(cors({
-  origin: ['http://localhost:8080', 'http://localhost:5173', 'http://localhost:5000', 'https://feedback-analyzer-flax.vercel.app'],
-  credentials: true
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS policy violation'), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
