@@ -34,6 +34,11 @@ const authRoutes = require('./routes/auth');
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/auth', authRoutes);
 
+// Health check route
+app.get('/', (req, res) => {
+  res.send('FeedPulse Backend is running successfully!');
+});
+
 // Central error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
